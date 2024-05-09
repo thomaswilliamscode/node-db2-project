@@ -1,7 +1,7 @@
 // STRETCH
 exports.seed = async function (knex) {
-	await knex('car_info').truncate()
-	await knex('car_info').insert([
+	await knex('cars').truncate()
+	await knex('cars').insert([
 		{
 			vin: '896754',
 			make: 'Honda',

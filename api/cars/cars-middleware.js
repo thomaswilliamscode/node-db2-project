@@ -7,7 +7,8 @@ const checkCarId = async (req, res, next) => {
   // DO YOUR MAGIC
   const id = req.params.id
   const car = await Cars.getById(id)
-  if (car) {
+  let length = car.length
+  if (length > 0) {
     req.car = car[0]
     next()
   } else {
@@ -32,7 +33,7 @@ const checkCarPayload = (req, res, next) => {
     } else {
       missing = 'mileage'
     }
-    res.status(404).json({message: `${missing} is missing`})
+    res.status(400).json({message: `${missing} is missing`})
   }
 }
 
@@ -42,17 +43,17 @@ const checkVinNumberValid = (req, res, next) => {
   if(isValid) {
     next()
   } else {
-    res.status(400).json({message: `vin ${req.body.vin}  is invalid`})
+    res.status(400).json({message: `vin ${req.body.vin} is invalid`})
   }
 }
 
 const checkVinNumberUnique = async (req, res, next) => {
   // DO YOUR MAGIC
   const { vin } = req.body
-  const isTaken = await db('car_info').where('vin', vin)
+  const isTaken = await db('cars').where('vin', vin)
   const length = isTaken.length
   if (length > 0) {
-    res.status(400).json({ message: `vin ${req.body.vin}  already exists` });
+    res.status(400).json({ message: `vin ${req.body.vin} already exists` });
   } else {
     next()
   }
